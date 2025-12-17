@@ -11,6 +11,8 @@ import { Brain, LogOut, ArrowRight, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { getStoredUser, clearUser } from '@/lib/auth'
 import { motion } from 'framer-motion'
+import { supabase } from '@/lib/supabase'
+import { useToast } from '@/hooks/use-toast'
 
 export default function QuestionnairePage() {
   const router = useRouter()
@@ -115,6 +117,75 @@ export default function QuestionnairePage() {
                         max={16}
                         step={0.5}
                         className="flex-1"
+                      />
+                      <span className="text-2xl font-bold text-primary w-16 text-right">
+                        {formData.avgWorkingHours}h
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Work From</Label>
+                    <Select value={formData.workFrom} onValueChange={(value) => setFormData({ ...formData, workFrom: value })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select work location" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="home">Home</SelectItem>
+                        <SelectItem value="office">Office</SelectItem>
+                        <SelectItem value="hybrid">Hybrid</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Work Pressure (1-5)</Label>
+                    <div className="flex items-center gap-4">
+                      <Slider
+                        value={[formData.workPressure]}
+                        onValueChange={([value]) => setFormData({ ...formData, workPressure: value })}
+                        min={1}
+                        max={5}
+                        step={1}
+                        className="flex-1"
+                      />
+                      <span className="text-2xl font-bold text-primary w-12 text-right">
+                        {formData.workPressure}
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">1 = Very Low, 5 = Very High</p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Manager Support (1-5)</Label>
+                    <div className="flex items-center gap-4">
+                      <Slider
+                        value={[formData.managerSupport]}
+                        onValueChange={([value]) => setFormData({ ...formData, managerSupport: value })}
+                        min={1}
+                        max={5}
+                        step={1}
+                        className="flex-1"
+                      />
+                      <span className="text-2xl font-bold text-primary w-12 text-right">
+                        {formData.managerSupport}
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">1 = Very Poor, 5 = Excellent</p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Working State</Label>
+                    <Select value={formData.workingState} onValueChange={(value) => setFormData({ ...formData, workingState: value })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select your state" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="karnataka">Karnataka</SelectItem>
+                        <SelectItem value="delhi">Delhi</SelectItem>
+                        <SelectItem value="mumbai">Mumbai</SelectItem>
+                        <SelectItem value="chennai">Chennai</SelectItem>
+                          className="flex-1"
                       />
                       <span className="text-2xl font-bold text-primary w-16 text-right">
                         {formData.avgWorkingHours}h
@@ -340,12 +411,12 @@ export default function QuestionnairePage() {
                   Next
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-              ) : (
-                <Button type="submit" className="ml-auto">
-                  Submit & View Results
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              )}
+                ) : (
+                  <Button type="submit" className="ml-auto" disabled={isSubmitting}>
+                    {isSubmitting ? 'Submitting...' : 'Submit & View Results'}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                )}
             </div>
           </form>
         </motion.div>
