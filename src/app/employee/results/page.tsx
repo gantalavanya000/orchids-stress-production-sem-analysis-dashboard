@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { getStoredUser, clearUser } from '@/lib/auth'
 import { BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts'
 import { motion } from 'framer-motion'
+import { supabase } from '@/lib/supabase'
 
 const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981']
 
